@@ -1,0 +1,46 @@
+name: Build executables
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.20'
+
+      - name: Build executables
+        run: |
+          go build -o codetoprompt-linux-amd64
+          OOS=windows GOARCH=amd64 go build -o codetoprompt-windows-amd64.exe
+          GOOS=darwin GOARCH=amd64 go build -o codetoprompt-darwin-amd64
+
+      - name: Upload executables for Linux
+        uses: actions/upload-artifact@v2
+        with:
+          name: codetoprompt-linux-amd64
+          path: codetoprompt-linux-amd64
+
+      - name: Upload executables for Windows
+        uses: actions/upload-artifact@v2
+        with:
+          name: codetoprompt-windows-amd64.exe
+          path: codetoprompt-windows-amd64.exe
+
+      - name: Upload executables for macOS
+        uses: actions/upload-artifact@v2
+        with:
+          name: codetoprompt-darwin-amd64
+          path: codetoprompt-darwin-amd64
