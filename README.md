@@ -12,7 +12,7 @@ If you have Go installed, you can install the package by running the following c
 go install github.com/alesr/codetoprompt
 ```
 
-Alternatively, you can download the binary for your platform from the artifacts built by the CI pipeline.
+Alternatively, you can download the binary for your platform from the artifacts built by the CI pipeline. The latest version can be found [here](https://github.com/alesr/codetoprompt/releases/tag/v1.0.0)
 
 
 ## Flags
