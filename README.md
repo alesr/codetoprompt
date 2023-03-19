@@ -24,7 +24,7 @@ The following flags are available:
         The directory to load files from (default ".")
   -exclude string
         A comma-separated list of directories or files to exclude
-  -include-blank
+  -blanklines
         Whether to include blank lines in the output
   -out string
         The file to output the results to
