@@ -1,3 +1,3 @@
-module github.com/alesr/fileloader
+module github.com/alesr/codetoprompt
 
 go 1.20
