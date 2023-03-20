@@ -1,6 +1,6 @@
-# codetoprompt
+# [CTP] codetoprompt
 
-codetoprompt is a Go package that loads files from a specified directory and outputs their contents in a format that can be used as a prompt for chat-GPT questions. The package can either display the output in the terminal or write it to a file.
+[CTP] codetoprompt is a Go package that loads files from a specified directory and outputs their contents in a format that can be used as a prompt for chat-GPT questions. The package can either display the output in the terminal or write it to a file.
 
 The package accepts flags to specify the directory to load files from, the file to output the results to (if any), and which directories or files to exclude. Additionally, the package can optionally include or exclude blank lines in the output.
 
@@ -9,11 +9,13 @@ The package accepts flags to specify the directory to load files from, the file 
 If you have Go installed, you can install the package by running the following command:
 
 ```bash
-go install github.com/alesr/codetoprompt
+$ go install github.com/alesr/codetoprompt
 ```
 
 Alternatively, you can download the binary for your platform from the artifacts built by the CI pipeline. The latest version can be found [here](https://github.com/alesr/codetoprompt/releases/tag/v1.0.0)
 
+
+As a suggestion is to rename the binary to `ctp` and add it to your path.
 
 ## Flags
 
@@ -35,8 +37,8 @@ The following flags are available:
 
 To use the package, run the following command:
 
-```
-codetoprompt -dir . -out out.txt -exclude go.mod,go.sum,.git,LICENSE,.gitignore,README.md,.github
+```shell
+$ ctp -dir . -out out.txt -exclude go.mod,go.sum,.git,LICENSE,.gitignore,README.md,.github
 ```
 
 The above command will load all files from the current directory, excluding the files specified in the exclude flag, and output the results to the file specified in the out flag.
