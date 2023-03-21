@@ -12,6 +12,12 @@ If you have Go installed, you can install the package by running the following c
 $ go install github.com/alesr/codetoprompt
 ```
 
+You can also use Homebrew to install the package:
+
+```bash
+brew install --build-bottle alesr/codetoprompt/ctp
+```
+
 Alternatively, you can download the binary for your platform from the artifacts built by the CI pipeline. The latest version can be found [here](https://github.com/alesr/codetoprompt/releases/tag/v1.0.0)
 
 
