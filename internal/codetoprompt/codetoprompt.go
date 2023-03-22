@@ -20,7 +20,11 @@ var (
 	exclude           string
 	excludeBlankLines bool
 
-	errOutputFileAlreadyExists = errors.New("output file already exists")
+	errOutputFileAlreadyExists error = errors.New("output file already exists")
+	errNoFilesToWrite          error = errors.New("no files to write")
+	errNoOutputFileProvided    error = errors.New("no output file provided")
+	errNoFilePathProvided      error = errors.New("no file path provided")
+	errNoRootPathProvided      error = errors.New("no root path provided")
 )
 
 type file struct {
@@ -38,7 +42,12 @@ func parseFlags() {
 	flag.Parse()
 }
 
+// Run is the entry point to the program.
+// It parses the flags, validates them, and loads the files
+// If the output path is not empty, it writes the files to the output path
+// Otherwise, it prints the files to the console
 func Run() error {
+
 	parseFlags()
 
 	if err := validateFlagsInput(); err != nil {
@@ -70,6 +79,8 @@ func Run() error {
 		if err != nil {
 			return fmt.Errorf("error creating output file: %w", err)
 		}
+
+		defer outputFile.Close()
 
 		if err := writeFiles(files, outputFile, excludeBlankLines); err != nil {
 			return fmt.Errorf("error writing files: %w", err)
@@ -128,6 +139,9 @@ func overwriteFile(filePath string) bool {
 }
 
 func loadFiles(rootPath string, ignoreList []string) ([]file, error) {
+	if rootPath == "" {
+		return nil, errNoRootPathProvided
+	}
 	var files []file
 
 	if err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
@@ -169,6 +183,10 @@ func loadFiles(rootPath string, ignoreList []string) ([]file, error) {
 }
 
 func createFile(outputPath string) (*os.File, error) {
+	if outputPath == "" {
+		return nil, errNoFilePathProvided
+	}
+
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return nil, fmt.Errorf("could not create file: %w", err)
@@ -176,8 +194,14 @@ func createFile(outputPath string) (*os.File, error) {
 	return file, nil
 }
 
-func writeFiles(files []file, output io.WriteCloser, includeBlanklines bool) error {
-	defer output.Close()
+func writeFiles(files []file, output io.Writer, includeBlanklines bool) error {
+	if files == nil {
+		return errNoFilesToWrite
+	}
+
+	if output == nil {
+		return errNoOutputFileProvided
+	}
 
 	if _, err := output.Write([]byte("---\n")); err != nil {
 		return fmt.Errorf("could not write opening code separator for file: %w", err)
