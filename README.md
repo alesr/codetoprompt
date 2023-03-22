@@ -9,7 +9,7 @@ The package accepts flags to specify the directory to load files from, the file 
 If you have Go installed, you can install the package by running the following command:
 
 ```bash
-$ go install github.com/alesr/codetoprompt
+$ go install github.com/alesr/codetoprompt@latest
 ```
 
 You can also use Homebrew to install the package:
