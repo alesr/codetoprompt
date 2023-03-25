@@ -39,8 +39,8 @@ type file struct {
 
 func parseFlags() {
 	flag.StringVar(&dir, "dir", "", "the root directory you want to load files from")
-	flag.StringVar(&outputDest, "out", "", "output destination with possible values: clipboard | stdout | file. Defaults to clipboard.")
-	flag.StringVar(&outputPath, "path", "", "the filepath to the output file, if not provided, the output will be displayed in the terminal")
+	flag.StringVar(&outputDest, "out", "", "output destination with possible values: clipboard | stdout | file. The default value is set to clipboard.")
+	flag.StringVar(&outputPath, "path", "", "the filepath to the output file")
 	flag.StringVar(&exclude, "exclude", "", "exclude a directory or a file from the output file")
 	flag.BoolVar(&excludeBlankLines, "blanklines", true, "include blank lines in the output file")
 
