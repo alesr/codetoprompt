@@ -1,6 +1,7 @@
 package codetoprompt
 
 import (
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -8,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/atotto/clipboard"
 )
 
 const (
@@ -16,6 +19,7 @@ const (
 
 var (
 	dir               string
+	outputDest        string
 	outputPath        string
 	exclude           string
 	excludeBlankLines bool
@@ -35,7 +39,8 @@ type file struct {
 
 func parseFlags() {
 	flag.StringVar(&dir, "dir", "", "the root directory you want to load files from")
-	flag.StringVar(&outputPath, "out", "", "the filepath to the output file, if not provided, the output will be displayed in the terminal")
+	flag.StringVar(&outputDest, "out", "", "output destination with possible values: clipboard | stdout | file. Defaults to clipboard.")
+	flag.StringVar(&outputPath, "path", "", "the filepath to the output file, if not provided, the output will be displayed in the terminal")
 	flag.StringVar(&exclude, "exclude", "", "exclude a directory or a file from the output file")
 	flag.BoolVar(&excludeBlankLines, "blanklines", true, "include blank lines in the output file")
 
@@ -73,7 +78,8 @@ func Run() error {
 		return fmt.Errorf("error loading files: %w", err)
 	}
 
-	if outputPath != "" {
+	if outputDest == "file" && outputPath != "" {
+
 		fmt.Println("Writing files to output file...")
 		outputFile, err := createFile(outputPath)
 		if err != nil {
@@ -88,11 +94,25 @@ func Run() error {
 		os.Exit(0)
 	}
 
-	for _, file := range files {
-		fmt.Println("Filename: ", file.name)
-		fmt.Println(string(file.content))
-		fmt.Println("---")
+	if outputDest == "stdout" {
+		for _, file := range files {
+			fmt.Println("Filename: ", file.name)
+			fmt.Println(string(file.content))
+			fmt.Println("---")
+		}
+		os.Exit(0)
 	}
+
+	var buff bytes.Buffer
+	if err := writeFiles(files, &buff, excludeBlankLines); err != nil {
+		return fmt.Errorf("error writing files: %w", err)
+	}
+
+	fmt.Println("Writing files to clipboard...")
+	if err = clipboard.WriteAll(buff.String()); err != nil {
+		return fmt.Errorf("error writing to clipboard: %w", err)
+	}
+
 	return nil
 }
 
