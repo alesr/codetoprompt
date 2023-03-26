@@ -28,14 +28,17 @@ As a suggestion is to rename the binary to `ctp` and add it to your path.
 The following flags are available:
 
 ```
-  -dir string
-        The directory to load files from (default ".")
-  -exclude string
-        A comma-separated list of directories or files to exclude
+Usage of codetoprompt:
   -blanklines
-        Whether to include blank lines in the output
+    	include blank lines in the output file (default true)
+  -dir string
+    	the root directory you want to load files from
+  -exclude string
+    	exclude a directory or a file from the output file
   -out string
-        The file to output the results to
+    	output destination with possible values: clipboard | stdout | file. The default value is set to clipboard.
+  -path string
+    	the filepath to the output file
 ```
 
 
@@ -44,7 +47,7 @@ The following flags are available:
 To use the package, run the following command:
 
 ```shell
-$ ctp -dir . -out out.txt -exclude go.mod,go.sum,.git,LICENSE,.gitignore,README.md,.github
+$ ctp -dir . -out stdout -exclude go.mod,go.sum,.git,LICENSE,.gitignore,README.md,.github
 ```
 
 The above command will load all files from the current directory, excluding the files specified in the exclude flag, and output the results to the file specified in the out flag.
