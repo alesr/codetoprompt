@@ -2,7 +2,10 @@ module github.com/alesr/codetoprompt
 
 go 1.20
 
-require github.com/stretchr/testify v1.8.2
+require (
+	github.com/atotto/clipboard v0.1.4
+	github.com/stretchr/testify v1.8.2
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
